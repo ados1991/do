@@ -90,6 +90,10 @@ func TestGetTopologyWithItsEntities(t *testing.T) {
 	for i := 1; i <= 2; i++ {
 		Db.Save(&data.Entity{Name: fmt.Sprintf("entity_%d", i), Active: true, TopologyID: topo.ID})
 	}
+	Db.Preload("Entities").First(&topo)
+	if len(topo.Entities) != 2 {
+		t.Error(fmt.Sprintf("topo %d must have 2 entities", topo.ID))
+	}
 }
 
 func TestMain(m *testing.M) {
